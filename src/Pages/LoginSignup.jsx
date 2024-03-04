@@ -24,7 +24,8 @@ const LoginSignup = () => {
     console.log("User signed in", formData);
     try {
       let responseData;
-      await fetch(`http://localhost:5000/api/v1/register`, {
+      console.log(process.env.REACT_APP_BASE_URL);
+      await fetch(`https://todo-backend-qvg8.onrender.com/api/v1/register`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -51,7 +52,8 @@ const LoginSignup = () => {
     console.log("User signed in", formData);
 
     let responseData;
-    await fetch(`http://localhost:5000/api/v1/login`, {
+    console.log(process.env.REACT_APP_BASE_URL);
+    await fetch(`https://todo-backend-qvg8.onrender.com/api/v1/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -61,7 +63,8 @@ const LoginSignup = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        (responseData = data); console.log(data);
+        responseData = data;
+        console.log(data);
       })
       .catch((error) => console.error("Error in logged in", error));
 
