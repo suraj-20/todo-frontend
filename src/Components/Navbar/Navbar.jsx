@@ -1,33 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("home");
   const [clicked, setClicked] = useState(false);
-  const navMenuRef = useRef(null);
 
   const handleClick = () => {
     setClicked(!clicked);
   };
-
-  const handleOutsideClick = (e) => {
-    if (navMenuRef.current && !navMenuRef.current.contains(e.targer)) {
-      setClicked(false);
-    }
-  };
-
-  useEffect(() => {
-    document.body.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      document.body.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
-
-  useEffect(() => {
-
-  },[clicked]);
 
   return (
     <div className="navbar">
@@ -40,7 +21,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <ul ref={navMenuRef} className={clicked ? "nav-menu active" : "nav-menu"}>
+      <ul className={clicked ? "nav-menu active" : "nav-menu"}>
         <li
           onClick={() => {
             setMenu("home");
@@ -60,9 +41,18 @@ const Navbar = () => {
       </ul>
 
       <div className="nav-login">
-        <Link to={"/login"}>
-          <button>Login</button>
-        </Link>
+        {localStorage.getItem("Auth-token") ? (
+          <button
+            onClick={() => {
+              localStorage.removeItem("Auth-token");
+              window.location.replace("/")
+            }}
+          >Logout</button>
+        ) : (
+          <Link to={"/login"}>
+            <button>Login</button>
+          </Link>
+        )}
       </div>
     </div>
   );

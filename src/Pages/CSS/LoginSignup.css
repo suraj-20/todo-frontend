@@ -102,10 +102,23 @@ h3 {
   justify-content: space-between;
 }
 
+.signupForm {
+  padding: 0.5rem 1.5rem;
+  gap: 0.5rem;
+}
+
 .form span {
   text-align: center;
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+.checkboxInput {
+  gap: 1rem;
+}
+
+.form-check {
+  gap: 0.3rem;
 }
 
 .inputDiv .icon {
@@ -130,7 +143,7 @@ label {
 
 .input {
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 0.7rem;
   background: var(--inputColor);
   border-radius: 10px;
 }
@@ -176,5 +189,14 @@ label {
   .container {
     width: 100%;
     height: 100%;
+  }
+
+  .formDiv {
+    width: 100%;
+  }
+
+  .form {
+    width: 100%;
+    justify-content: normal;
   }
 }
