@@ -37,7 +37,8 @@ const LoginSignup = () => {
         .then((data) => (responseData = data))
         .catch((error) => console.log(error));
 
-      if (responseData.success) {
+      if (responseData) {
+        localStorage.setItem("Authorization", responseData.token);
         window.location.replace("/login");
         console.log("User created");
       } else {
@@ -68,8 +69,8 @@ const LoginSignup = () => {
       })
       .catch((error) => console.error("Error in logged in", error));
 
-    if (responseData.success) {
-      localStorage.setItem("Auth-token", responseData.token);
+    if (responseData) {
+      localStorage.setItem("Authorization", responseData.token);
       window.location.replace("/");
       console.log("User logged in");
     } else {

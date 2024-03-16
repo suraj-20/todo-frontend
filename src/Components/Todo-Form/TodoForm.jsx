@@ -10,7 +10,7 @@ const TodoForm = () => {
   const [editedTitle, setEditedTitle] = useState("");
 
   const handleChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setTodoData({ ...todoData, [e.target.name]: e.target.value });
   };
 
@@ -22,21 +22,25 @@ const TodoForm = () => {
   const handleSubmitData = async () => {
     console.log("Data submited.");
     try {
-      if (localStorage.getItem("Auth-token")) {
-        await fetch("https://todo-backend-qvg8.onrender.com/api/v1/todos", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Auth-token": `${localStorage.getItem("Auth-token")}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(todoData),
-        })
-          .then((res) => res.json())
-          .then((data) => data)
-          .catch((error) => console.error(error));
-        await fetchTodos();
+      // Get JWT token from localStorage or wherever it's stored
+      const token = localStorage.getItem("Authorization");
+      if (!token) {
+        throw new Error("Token not found");
       }
+
+      await fetch("https://todo-backend-qvg8.onrender.com/api/v1/todos", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todoData),
+      })
+        .then((res) => res.json())
+        .then((data) => data)
+        .catch((error) => console.error(error));
+      await fetchTodos();
     } catch (error) {
       console.error("Error in submiting data.", error);
     }
@@ -45,23 +49,27 @@ const TodoForm = () => {
   const handleUpdate = async () => {
     console.log("Todo Updated");
     try {
-      if (localStorage.getItem("Auth-token")) {
-        await fetch(
-          `https://todo-backend-qvg8.onrender.com/api/v1/todos/${editTodo._id}`,
-          {
-            method: "PUT",
-            headers: {
-              Accept: "application/json",
-              "Auth-token": `${localStorage.getItem("Auth-token")}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ title: editedTitle }),
-          }
-        )
-          .then((res) => res.json())
-          .catch((error) => console.error(error));
-        await fetchTodos();
+      const token = localStorage.getItem("Authorization");
+      console.log(token);
+      if (!token) {
+        throw new Error("Token not found");
       }
+      console.log("edittodo id", editTodo._id);
+      await fetch(
+        `https://todo-backend-qvg8.onrender.com/api/v1/todos/${editTodo._id}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title: editedTitle }),
+        }
+      )
+        .then((res) => res.json())
+        .catch((error) => console.error(error));
+      await fetchTodos();
     } catch (error) {
       console.error("Error in updating data:", error);
     }
@@ -70,23 +78,30 @@ const TodoForm = () => {
   const handleDelete = async (todoId) => {
     console.log("Item deleted");
     try {
-      if (localStorage.getItem("Auth-token")) {
-        await fetch(
-          `https://todo-backend-qvg8.onrender.com/api/v1/todos/${todoId}`,
-          {
-            method: "DELETE",
-            headers: {
-              Accept: "applicaation/json",
-              "Auth-token": `${localStorage.getItem("Auth-token")}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ todoId }),
-          }
-        )
-          .then((res) => res.json())
-          .catch((error) => console.error(error));
-        await fetchTodos();
+      // Get JWT token from localStorage or wherever it's stored
+      const token = localStorage.getItem("Authorization");
+      console.log(token);
+      if (!token) {
+        throw new Error("Token not found");
       }
+
+      console.log("todoId", todoId);
+      await fetch(
+        `https://todo-backend-qvg8.onrender.com/api/v1/todos/${todoId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Accept: "applicaation/json",
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ todoId }),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
+      await fetchTodos();
     } catch (error) {
       console.error("Error in deleting data:", error);
     }
@@ -94,14 +109,24 @@ const TodoForm = () => {
 
   const fetchTodos = async () => {
     try {
-      if (localStorage.getItem("Auth-token")) {
-        await fetch("https://todo-backend-qvg8.onrender.com/api/v1/todos")
-          .then((res) => res.json())
-          .then((data) => setTodos(data))
-          .catch((error) => console.error(error));
+      // Get JWT token from localStorage or wherever it's stored
+      const token = localStorage.getItem("Authorization");
+      // console.log(token);
+      if (!token) {
+        throw new Error("Token not found");
       }
+
+      await fetch(`https://todo-backend-qvg8.onrender.com/api/v1/todos`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setTodos(data.todos));
     } catch (error) {
-      console.error("Error fetching Todos:", error);
+      console.error("Error in fetching data", error);
+      // Handle error
     }
   };
 
@@ -132,49 +157,50 @@ const TodoForm = () => {
           />
         </form>
         <ul className="todos" id="todos">
-          {todos.map((todo, i) => (
-            <div key={todo._id} className="todo-list">
-              {editTodo && editTodo._id === todo._id ? (
-                <>
-                  <input
-                    value={editedTitle}
-                    onChange={(e) => setEditedTitle(e.target.value)}
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="todo-input"
-                    placeholder="Enter your todo"
-                    autoComplete="off"
-                  />
-                  <button onClick={handleUpdate}>
-                    <i className="fa-solid fa-pen"></i>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <li key={todo._id}>
-                    <p>{todo.title}</p>
-                    <div className="editAndUpdateBtn">
-                      <button
-                        onClick={() => {
-                          handleEdit(todo);
-                        }}
-                      >
-                        <i className="fa-regular fa-pen-to-square"></i>
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleDelete(todo._id);
-                        }}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                    </div>
-                  </li>
-                </>
-              )}
-            </div>
-          ))}
+          {todos &&
+            todos.map((todo) => (
+              <div key={todo._id} className="todo-list">
+                {editTodo && editTodo._id === todo._id ? (
+                  <>
+                    <input
+                      value={editedTitle}
+                      onChange={(e) => setEditedTitle(e.target.value)}
+                      type="text"
+                      name="title"
+                      id="title"
+                      className="todo-input"
+                      placeholder="Enter your todo"
+                      autoComplete="off"
+                    />
+                    <button onClick={handleUpdate}>
+                      <i className="fa-solid fa-pen"></i>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <li key={todo._id}>
+                      <p>{todo.title}</p>
+                      <div className="editAndUpdateBtn">
+                        <button
+                          onClick={() => {
+                            handleEdit(todo);
+                          }}
+                        >
+                          <i className="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleDelete(todo._id);
+                          }}
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    </li>
+                  </>
+                )}
+              </div>
+            ))}
         </ul>
       </div>
     </div>
