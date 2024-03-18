@@ -119,10 +119,6 @@ small {
 }
 
 @media (max-width: 769px) {
-  small {
-    display: none;
-  }
-
   .phone {
     display: flex;
   }
@@ -135,10 +131,6 @@ small {
 
   .todoForm {
     width: 340px;
-  }
-
-  small {
-    display: none;
   }
 }
 
