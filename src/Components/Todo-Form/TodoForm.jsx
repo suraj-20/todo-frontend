@@ -20,14 +20,6 @@ const TodoForm = () => {
     });
   };
 
-  // const handleCheckboxChange = () => {
-  //   setTodoData({
-  //     ...todoData,
-  //     complete: !todoData.complete,
-  //   });
-  //   console.log(todoData);
-  // };
-
   const handleEdit = (todo) => {
     setEditTodo(todo);
     setEditedTitle(todo.title);
@@ -264,7 +256,7 @@ const TodoForm = () => {
                           }
                           type="checkbox"
                           id={todo._id}
-                          style={{fontSize: "1rem"}}
+                          style={{ fontSize: "1rem" }}
                         />
                         <p
                           onClick={() => handleToogleEdit(todo)}
@@ -304,6 +296,11 @@ const TodoForm = () => {
           )}
         </ul>
       </div>
+      {localStorage.getItem("Authentication") ? (
+        <></>
+      ) : (
+        <small>You need to signup/login first.</small>
+      )}
     </div>
   );
 };
