@@ -18,11 +18,12 @@ h1 {
 
 .todoForm {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
 }
 
 .todo-input {
   border: none;
-  font-size: 2rem;
+  font-size: 1.2rem;
   padding: 1rem 2rem;
   display: block;
   width: 100%;
@@ -41,6 +42,39 @@ h1 {
 
 .todo-list {
   padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.editArea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editArea input {
+  width: 100%;
+}
+
+.editArea .editBtn {
+  border: none;
+  font-size: 1rem;
+  color: rgba(221, 123, 221, 0.596);
+}
+
+.checkboxOrTodoData {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.checkboxOrTodoData p {
+  overflow: hidden;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  margin: 0;
 }
 
 .editAndUpdateBtn {
@@ -48,8 +82,14 @@ h1 {
   gap: 1rem;
 }
 
+.editAndUpdateBtn button {
+  border: none;
+  font-size: 1rem;
+  color: rgba(221, 123, 221, 0.596);
+}
+
 .todos li {
-  border-top: 1px solid #e5e5e5;
+  /* border-top: 1px solid #e5e5e5; */
   font-size: 1.5rem;
   cursor: pointer;
   display: flex;
@@ -70,6 +110,12 @@ small {
   margin-top: 3rem;
   color: #b5b5b5;
   text-align: center;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 769px) {

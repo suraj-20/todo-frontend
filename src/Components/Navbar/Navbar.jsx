@@ -41,13 +41,15 @@ const Navbar = () => {
       </ul>
 
       <div className="nav-login">
-        {localStorage.getItem("Auth-token") ? (
+        {localStorage.getItem("Authorization") ? (
           <button
             onClick={() => {
-              localStorage.removeItem("Auth-token");
-              window.location.replace("/")
+              localStorage.removeItem("Authorization");
+              window.location.replace("/");
             }}
-          >Logout</button>
+          >
+            Logout
+          </button>
         ) : (
           <Link to={"/login"}>
             <button>Login</button>

@@ -148,6 +148,11 @@ label {
   border-radius: 10px;
 }
 
+.showOrHidePassword {
+  border: none;
+  background: var(--inputColor);
+}
+
 .btn {
   /* padding: .8rem; */
   background: var(--primaryColor);

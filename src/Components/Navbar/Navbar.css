@@ -44,6 +44,7 @@
 
 .nav-menu li a {
   color: rgba(221, 123, 221, 0.87);
+  text-decoration: none;
 }
 
 .nav-menu hr {
