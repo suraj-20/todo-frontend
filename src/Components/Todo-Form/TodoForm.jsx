@@ -223,7 +223,7 @@ const TodoForm = () => {
         </form>
         {/* {loader ? loader : "Loading.."} */}
         <ul className="todos" id="todos">
-          {todos ? (
+          {todos && todos ? (
             todos.map((todo) => (
               <div key={todo._id} className="todo-list">
                 {editTodo && editTodo._id === todo._id ? (
@@ -292,7 +292,7 @@ const TodoForm = () => {
               </div>
             ))
           ) : (
-            <Loading />
+            ""
           )}
         </ul>
       </div>
